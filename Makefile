@@ -15,7 +15,8 @@ DOTFILES_URL := $(or $(DOTFILES_URL),https://github.com/ilude/dotfiles.git)
 
 .PHONY: dotfiles update-dotfiles echo ownership setup ssh
 setup: ownership $(ENV_FILE) ssh dotfiles
-	git config -l | grep 'safe.directory=*' || git config --global --add safe.directory '*'
+	@git config -l | grep 'safe.directory=*' || git config --global --add safe.directory '*'
+	cd .devcontainer/lsp && bundle install
 	@echo "Makefile Completed..."
 
 ownership:	

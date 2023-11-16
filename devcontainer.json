@@ -62,6 +62,7 @@
 					]
 				}
 			},
+			"rubyLsp.bundleGemfile": ".devcontainer/lsp/Gemfile",
 			"terminal.integrated.defaultProfile.linux": "zsh",
 			"files.readonlyFromPermissions": true,
 			"terminal.integrated.tabs.description": "",
