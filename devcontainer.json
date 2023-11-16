@@ -1,0 +1,90 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/alpine
+{
+	"name": "${localWorkspaceFolderBasename}",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"build": { 
+		"dockerfile": "Dockerfile",
+		"args": {
+			"USER": "${localEnv:USERNAME}",
+			"PROJECT_NAME": "${localWorkspaceFolderBasename}"
+		}
+	},
+	"workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
+	"runArgs": ["--name", "${localWorkspaceFolderBasename}_devcontainer", "--hostname", "${localWorkspaceFolderBasename}" ],
+	"initializeCommand": "pwsh -File ${localWorkspaceFolder}/.devcontainer/setup-ssh-agent.ps1",
+	"updateContentCommand": "make --ignore-errors -f .devcontainer/Makefile", 
+	"containerEnv": {
+		"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
+	},
+	"mounts": [
+		"source=${localWorkspaceFolderBasename}-home,target=/home/${localEnv:USERNAME},type=volume",
+    "source=${localEnv:USERPROFILE}/.ssh,target=/home/${localEnv:USERNAME}/.ssh,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+		"source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind"
+	],
+	"features": {
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"Shopify.ruby-lsp",
+				"eamodio.gitlens",
+				"redhat.vscode-yaml",
+				"kaiwood.endwise",
+				"CraigMaslowski.erb",
+				"sidneys1.gitconfig",
+				"vscode-icons-team.vscode-icons",
+				"nhoizey.gremlins",
+				"nonoroazoro.syncing",
+				"dunstontc.vscode-docker-syntax",
+				"bung87.vscode-gemfile",
+				"ninoseki.vscode-gem-lens",
+				"EditorConfig.EditorConfig",
+				"streetsidesoftware.code-spell-checker",
+				"MS-vsliveshare.vsliveshare",
+				"donjayamanne.githistory",
+				"mikestead.dotenv",
+				"esbenp.prettier-vscode",
+				"Gruntfuggly.todo-tree",
+				"pranaygp.vscode-css-peek",
+				"jeff-hykin.better-dockerfile-syntax"
+			]
+		},
+		"settings": {
+			"terminal.integrated.profiles.linux": {
+				"zsh": {
+					"path": "/bin/zsh",
+					"icon": "terminal-linux",
+					"args": [
+						"-l"
+					]
+				}
+			},
+			"terminal.integrated.defaultProfile.linux": "zsh",
+			"files.readonlyFromPermissions": true,
+			"terminal.integrated.tabs.description": "",
+			"terminal.integrated.tabs.title": "${local}${separator}${cwdFolder}${separator}${process}",
+			"cSpell.words": [
+				"devcontainer",
+				"devcontainers",
+				"donjayamanne",
+				"dunstontc",
+				"eamodio",
+				"esbenp",
+				"githistory",
+				"Gruntfuggly",
+				"hykin",
+				"kaiwood",
+				"Maslowski",
+				"mikestead",
+				"nhoizey",
+				"ninoseki",
+				"nonoroazoro",
+				"pranaygp",
+				"sidneys"
+			]
+		}
+	}
+}
