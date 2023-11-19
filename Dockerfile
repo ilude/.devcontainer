@@ -16,24 +16,31 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
+    freetds-dev \
     git \
     git-doc \
-    freetds-dev \
+    jq \
     make \
-    symlinks \
-    tldr \
-    tree \
+    man \
+    man-db \
+    manpages-dev \
     nano \
-    openssl \
     openssh-client \
+    openssl \
     python3 \
     rsync \
     sshpass \
     sudo \
+    symlinks \
+    tldr \
+    tree \
     tzdata \
+    yq \
     zsh \
     zsh-autosuggestions && \
     rm -rf /var/lib/apt/lists/*
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
 
 RUN sed -i 's/UID_MAX .*/UID_MAX    100000/' /etc/login.defs && \
     groupadd --gid ${PGID} ${USER} && \
@@ -41,10 +48,7 @@ RUN sed -i 's/UID_MAX .*/UID_MAX    100000/' /etc/login.defs && \
     echo ${USER} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USER} && \
     chmod 0440 /etc/sudoers.d/${USER} && \
     mkdir -p /workspace/${PROJECT_NAME}
-
-#     useradd -M -s /bin/false -u 65532 cloudflare && \
-
-
+#    useradd -M -s /bin/false -u 65532 cloudflare
 
 COPY --chmod=755 <<-"EOF" /usr/local/bin/docker-entrypoint.sh
 #!/bin/bash
@@ -60,8 +64,6 @@ EOF
 
 ENV HOME=/home/${USER}
 USER ${USER}
-
-
 
 # https://code.visualstudio.com/remote/advancedcontainers/start-processes#_adding-startup-commands-to-the-docker-image-instead
 ENTRYPOINT [ "docker-entrypoint.sh" ]
