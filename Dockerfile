@@ -18,6 +18,7 @@ ENV HOST_PROJECT_PATH=${HOST_PROJECT_PATH}
 RUN apk add --no-cache \
 		bash \
 		build-base \
+		linux-headers \
 		util-linux \
 		coreutils \
 		binutils \
