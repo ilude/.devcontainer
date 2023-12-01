@@ -1,7 +1,8 @@
-# syntax=docker/dockerfile:1.4 
+# syntax=docker/dockerfile:1.4
+ARG IMAGE_LANG=rust 
 ARG IMAGE_VERSION=alpine3.18
 
-FROM rust:alpine3.18
+FROM ${IMAGE_LANG}:${IMAGE_VERSION}
 
 LABEL maintainer="Mike Glenn <mglenn@ilude.com>"
 
@@ -55,7 +56,8 @@ RUN addgroup -g ${PGID} ${USER} && \
 		adduser -u ${PUID} -G ${USER} -s /bin/zsh -D ${USER} && \
     echo ${USER} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USER} && \
     chmod 0440 /etc/sudoers.d/${USER} && \
-    mkdir -p /workspace/${PROJECT_NAME}
+    mkdir -p /workspace/${PROJECT_NAME} && \
+		ln -s /usr/share/zoneinfo/${TZ} /etc/localtime
 
 COPY --chmod=755 <<-"EOF" /usr/local/bin/docker-entrypoint.sh
 #!/bin/bash
