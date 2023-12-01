@@ -10,7 +10,8 @@
 		"args": {
 			"USER": "${localEnv:USERNAME}",
 			"PROJECT_NAME": "${localWorkspaceFolderBasename}",
-			"HOST_PROJECT_PATH": "${localWorkspaceFolder}"
+			"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
+			"TZ": "${localEnv:TZ:America/New_York}"
 		}
 	},
 	"workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
@@ -20,6 +21,6 @@
 	"mounts": [
 		"source=${localWorkspaceFolderBasename}-home,target=/home/${localEnv:USERNAME},type=volume,consistency=delegated",
     "source=${localEnv:USERPROFILE}/.ssh,target=/home/${localEnv:USERNAME}/.ssh,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind,consistency=delegated",
+    "source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind,consistency=delegated"
 	]
 }

@@ -11,9 +11,11 @@ ARG PGID=1000
 ARG USER
 ARG PROJECT_NAME
 ARG HOST_PROJECT_PATH
+ARG TZ
 ENV USER=${USER}
 ENV PROJECT_NAME=${PROJECT_NAME}
 ENV HOST_PROJECT_PATH=${HOST_PROJECT_PATH}
+ENV TZ=${TZ}
 
 RUN apk add --no-cache \
 		bash \
@@ -23,6 +25,9 @@ RUN apk add --no-cache \
 		coreutils \
 		binutils \
 		findutils \
+		bat \
+		exa \
+		ripgrep \
 		bash-completion \
 		cmake \
 		extra-cmake-modules \
