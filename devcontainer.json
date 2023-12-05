@@ -35,10 +35,14 @@
 					]
 				}
 			},
-			"terminal.integrated.defaultProfile.linux": "zsh",
+			"dev.containers.copyGitConfig": false,
+			"dev.containers.gitCredentialHelperConfigLocation": "system",
+			"editor.tabSize": 2,
 			"files.readonlyFromPermissions": true,
+			"terminal.integrated.defaultProfile.linux": "zsh",
 			"terminal.integrated.tabs.description": "",
 			"terminal.integrated.tabs.title": "${local}${separator}${cwdFolder}${separator}${process}",
+			"window.title": "${localWorkspaceFolderBasename}"
 		}
 	}
 }
