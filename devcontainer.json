@@ -72,26 +72,7 @@
 			"terminal.integrated.defaultProfile.linux": "zsh",
 			"terminal.integrated.tabs.description": "",
 			"terminal.integrated.tabs.title": "${local}${separator}${cwdFolder}${separator}${process}",
-			"window.title": "${localWorkspaceFolderBasename}",
-			"cSpell.words": [
-				"devcontainer",
-				"devcontainers",
-				"donjayamanne",
-				"dunstontc",
-				"eamodio",
-				"esbenp",
-				"githistory",
-				"Gruntfuggly",
-				"hykin",
-				"kaiwood",
-				"Maslowski",
-				"mikestead",
-				"nhoizey",
-				"ninoseki",
-				"nonoroazoro",
-				"pranaygp",
-				"sidneys"
-			]
+			"window.title": "${localWorkspaceFolderBasename}"
 		}
 	}
 }
