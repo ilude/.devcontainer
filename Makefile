@@ -1,4 +1,3 @@
-# include .env if present
 MAKEFILE_DIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 PARENT_DIR := $(realpath $(MAKEFILE_DIR)../)
 DOTBOT_LINK := $(abspath $(PARENT_DIR)/.dotfiles)
@@ -7,6 +6,7 @@ USER := $(or $(USER),$(shell whoami))
 DATE := $(shell TZ=America/Los_Angeles date '+%Y-%m-%d-%H.%M.%S')
 export GIT_USER := $(shell echo "$(GIT_USER)" | tr A-Z a-z)
 
+# include .env if present
 ifneq (,$(wildcard $(ENV_FILE)))
 	include $(ENV_FILE)
 	export
@@ -26,7 +26,7 @@ echo:
 
 
 setup: ownership $(ENV_FILE) ssh $(DOTBOT_LINK)
-	@git config -l | grep -silent 'safe.directory=*' || git config --global --add safe.directory '*'
+#@git config -l | grep -silent 'safe.directory=*' || git config --global --add safe.directory '*'
 	@echo "Makefile Completed..."
 
 ownership:	
