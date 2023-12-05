@@ -20,35 +20,35 @@ ENV TZ=${TZ}
 
 RUN apk add --no-cache \
 		bash \
-		build-base \
-		linux-headers \
-		util-linux \
-		coreutils \
-		binutils \
-		findutils \
-		bat \
-		exa \
-		ripgrep \
 		bash-completion \
+		binutils \
+		build-base \
 		cmake \
-		extra-cmake-modules \
+		coreutils \
 		curl \
+		exa \
+		extra-cmake-modules \
+		findutils \
 		git \
+		iproute2 \
 		jq \
+		linux-headers \
 		make \
 		nano \
 		openssh-client \
 		python3 \
 		python3-dev \
 		py3-pip \
+		ripgrep \
 		sudo \
 		tar \
-    tree \
+		tree \
+		tzdata \
+		util-linux \
 		xz \
 		yq \
-    tzdata \
-    zsh \
-    zsh-autosuggestions && \
+		zsh \
+		zsh-autosuggestions && \
     rm -rf /var/lib/apt/lists/* && \
 		pip3 install tldr 
 

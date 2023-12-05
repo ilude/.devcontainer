@@ -1,6 +1,7 @@
 # include .env if present
 MAKEFILE_DIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 PARENT_DIR := $(realpath $(MAKEFILE_DIR)../)
+DOTBOT_LINK := $(abspath $(PARENT_DIR)/.dotfiles)
 ENV_FILE := $(realpath $(PARENT_DIR)/.env) 
 USER := $(or $(USER),$(shell whoami))
 DATE := $(shell TZ=America/Los_Angeles date '+%Y-%m-%d-%H.%M.%S')
@@ -14,13 +15,6 @@ endif
 DOTFILES_URL := $(or $(DOTFILES_URL),https://github.com/ilude/dotfiles.git)
 
 .PHONY: dotfiles update-dotfiles echo ownership setup ssh
-setup: ownership $(ENV_FILE) ssh dotfiles
-	@git config -l | grep -silent 'safe.directory=*' || git config --global --add safe.directory '*'
-	@echo "Makefile Completed..."
-
-ownership:	
-	sudo chown -R $(USER):$(USER) $(PARENT_DIR)
-
 echo:
 	@echo ENV_FILE: $(ENV_FILE)
 	@echo PARENT_DIR: $(PARENT_DIR)
@@ -28,6 +22,15 @@ echo:
 	@echo VSCODE_DIR: $(VSCODE_DIR)
 	@echo VSCODE_SETTINGS_FILE: $(VSCODE_SETTINGS_FILE)
 	@echo DOTFILES_URL: $(DOTFILES_URL)
+	@echo DOTBOT_LINK: $(DOTBOT_LINK)
+
+
+setup: ownership $(ENV_FILE) ssh $(DOTBOT_LINK)
+	@git config -l | grep -silent 'safe.directory=*' || git config --global --add safe.directory '*'
+	@echo "Makefile Completed..."
+
+ownership:	
+	sudo chown -R $(USER):$(USER) $(PARENT_DIR)
 
 $(ENV_FILE):
 	@echo "Creating empty $@ file..."
@@ -41,6 +44,10 @@ ssh:
 	@echo "Setting up ssh-agent..."
 	@ssh-add
 	@eval `ssh-agent`
+
+$(DOTBOT_LINK): dotfiles
+	@echo "Creating symlink to $(DOTBOT_LINK)..."
+	@ln -s ~/.dotfiles $(DOTBOT_LINK) 
 
 reload-dotfiles:
 	symlinks -v ~ | grep .dotfiles | awk '{print $$2}' | xargs rm 
