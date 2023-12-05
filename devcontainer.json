@@ -1,11 +1,9 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
 {
-	"name": "Existing Dockerfile",
+	"name": "${localWorkspaceFolderBasename}",
 	"build": {
-		// Sets the run context to one level up instead of the .devcontainer folder.
 		"context": ".",
-		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
 		"dockerfile": "Dockerfile",
 		"args": {
 			"USER": "${localEnv:USERNAME}",
@@ -18,9 +16,29 @@
 	"runArgs": ["--name", "${localWorkspaceFolderBasename}_devcontainer", "--hostname", "${localWorkspaceFolderBasename}"],
 	"initializeCommand": "pwsh -File ${localWorkspaceFolder}/.devcontainer/setup-ssh-agent.ps1",
 	"updateContentCommand": "make setup --ignore-errors -f .devcontainer/Makefile", 
+	"containerEnv": {
+		"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
+	},
 	"mounts": [
 		"source=${localWorkspaceFolderBasename}-home,target=/home/${localEnv:USERNAME},type=volume,consistency=delegated",
     "source=${localEnv:USERPROFILE}/.ssh,target=/home/${localEnv:USERNAME}/.ssh,type=bind,consistency=cached",
     "source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind,consistency=delegated"
-	]
+	],
+	"customizations": {
+		"settings": {
+			"terminal.integrated.profiles.linux": {
+				"zsh": {
+					"path": "/bin/zsh",
+					"icon": "terminal-linux",
+					"args": [
+						"-l"
+					]
+				}
+			},
+			"terminal.integrated.defaultProfile.linux": "zsh",
+			"files.readonlyFromPermissions": true,
+			"terminal.integrated.tabs.description": "",
+			"terminal.integrated.tabs.title": "${local}${separator}${cwdFolder}${separator}${process}",
+		}
+	}
 }
