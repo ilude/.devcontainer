@@ -4,10 +4,13 @@
 	"name": "${localWorkspaceFolderBasename}",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"build": { 
+		"context": ".",
 		"dockerfile": "Dockerfile",
 		"args": {
 			"USER": "${localEnv:USERNAME}",
-			"PROJECT_NAME": "${localWorkspaceFolderBasename}"
+			"PROJECT_NAME": "${localWorkspaceFolderBasename}",
+			"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
+			"TZ": "${localEnv:TZ:America/New_York}"
 		}
 	},
 	"workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
@@ -21,7 +24,6 @@
 		"source=${localWorkspaceFolderBasename}-home,target=/home/${localEnv:USERNAME},type=volume",
     "source=${localEnv:USERPROFILE}/.ssh,target=/home/${localEnv:USERNAME}/.ssh,type=bind,consistency=cached",
     "source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind,consistency=cached",
-		"source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind"
 	],
 	"features": {
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
@@ -63,10 +65,14 @@
 				}
 			},
 			"rubyLsp.bundleGemfile": ".devcontainer/lsp/Gemfile",
-			"terminal.integrated.defaultProfile.linux": "zsh",
+			"dev.containers.copyGitConfig": false,
+			"dev.containers.gitCredentialHelperConfigLocation": "system",
+			"editor.tabSize": 2,
 			"files.readonlyFromPermissions": true,
+			"terminal.integrated.defaultProfile.linux": "zsh",
 			"terminal.integrated.tabs.description": "",
 			"terminal.integrated.tabs.title": "${local}${separator}${cwdFolder}${separator}${process}",
+			"window.title": "${localWorkspaceFolderBasename}",
 			"cSpell.words": [
 				"devcontainer",
 				"devcontainers",
