@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
-ARG IMAGE_LANG=rust 
-ARG IMAGE_VERSION=alpine3.18
+ARG IMAGE_LANG=alpine
+ARG IMAGE_VERSION=3.18
 
 FROM ${IMAGE_LANG}:${IMAGE_VERSION}
 
@@ -20,37 +20,17 @@ ENV TZ=${TZ}
 
 RUN apk add --no-cache \
 		bash \
-		bash-completion \
 		binutils \
-		build-base \
-		cmake \
-		coreutils \
 		curl \
-		exa \
-		extra-cmake-modules \
-		findutils \
 		git \
-		iproute2 \
-		jq \
-		linux-headers \
 		make \
-		nano \
 		openssh-client \
-		python3 \
-		python3-dev \
 		py3-pip \
-		ripgrep \
 		sudo \
-		tar \
-		tree \
 		tzdata \
-		util-linux \
-		xz \
-		yq \
 		zsh \
 		zsh-autosuggestions && \
-    rm -rf /var/lib/apt/lists/* && \
-		pip3 install tldr 
+    rm -rf /var/lib/apt/lists/* 
 
 RUN addgroup -g ${PGID} ${USER} && \
 		adduser -u ${PUID} -G ${USER} -s /bin/zsh -D ${USER} && \
