@@ -1,14 +1,19 @@
 MAKEFILE_DIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
+DEVCONTAINER_ENV := $(abspath $(MAKEFILE_DIR)/.env) 
 PARENT_DIR := $(realpath $(MAKEFILE_DIR)../)
+PARENT_ENV := $(abspath $(PARENT_DIR)/.env) 
 DOTBOT_LINK := $(abspath $(PARENT_DIR)/.dotfiles)
-ENV_FILE := $(realpath $(PARENT_DIR)/.env) 
 USER := $(or $(USER),$(shell whoami))
-DATE := $(shell TZ=America/Los_Angeles date '+%Y-%m-%d-%H.%M.%S')
-export GIT_USER := $(shell echo "$(GIT_USER)" | tr A-Z a-z)
+
+# include .devcontainer/.env if present
+ifneq (,$(wildcard $(DEVCONTAINER_ENV)))
+	include $(DEVCONTAINER_ENV)
+	export
+endif
 
 # include .env if present
-ifneq (,$(wildcard $(ENV_FILE)))
-	include $(ENV_FILE)
+ifneq (,$(wildcard $(PARENT_ENV)))
+	include $(PARENT_ENV)
 	export
 endif
 
@@ -16,7 +21,8 @@ DOTFILES_URL := $(or $(DOTFILES_URL),https://github.com/ilude/dotfiles.git)
 
 .PHONY: dotfiles update-dotfiles echo ownership setup ssh
 echo:
-	@echo ENV_FILE: $(ENV_FILE)
+	@echo DEVCONTAINER_ENV: $(DEVCONTAINER_ENV)
+	@echo PARENT_ENV: $(PARENT_ENV)
 	@echo PARENT_DIR: $(PARENT_DIR)
 	@echo MAKEFILE_DIR: $(MAKEFILE_DIR)
 	@echo VSCODE_DIR: $(VSCODE_DIR)
@@ -25,16 +31,12 @@ echo:
 	@echo DOTBOT_LINK: $(DOTBOT_LINK)
 
 
-setup: ownership $(ENV_FILE) ssh $(DOTBOT_LINK)
-#@git config -l | grep -silent 'safe.directory=*' || git config --global --add safe.directory '*'
-	@echo "Makefile Completed..."
-
-ownership:	
+setup: ssh 
 	sudo chown -R $(USER):$(USER) $(PARENT_DIR)
-
-$(ENV_FILE):
-	@echo "Creating empty $@ file..."
-	touch $@
+	@echo "Creating symlink to $(DOTBOT_LINK)..."
+	@rm -f $(DOTBOT_LINK)
+	@ln -s ~/.dotfiles $(DOTBOT_LINK) 
+	@echo "Makefile Completed..."
 
 ssh:
 	@echo "Setting up ~/.ssh..."
@@ -44,10 +46,6 @@ ssh:
 	@echo "Setting up ssh-agent..."
 	@ssh-add
 	@eval `ssh-agent`
-
-$(DOTBOT_LINK): dotfiles
-	@echo "Creating symlink to $(DOTBOT_LINK)..."
-	@ln -s ~/.dotfiles $(DOTBOT_LINK) 
 
 reload-dotfiles:
 	symlinks -v ~ | grep .dotfiles | awk '{print $$2}' | xargs rm 
@@ -85,7 +83,11 @@ else ifneq (, $(shell which powershell))
 	SHELL_COMMAND=powershell
 endif
 
-initialize: $(INITIALIZERS)
+initialize: echo $(INITIALIZERS) $(DEVCONTAINER_ENV)
+
+$(DEVCONTAINER_ENV):
+	@echo "Creating empty $@ file..."
+	touch $@
 
 initialize-windows:
 	@echo "Initializing Windows..."

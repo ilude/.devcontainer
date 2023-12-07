@@ -6,23 +6,23 @@
 		"context": ".",
 		"dockerfile": "Dockerfile",
 		"args": {
-			"USER": "${localEnv:USERNAME}",
+			"USER": "${localEnv:USER}${localEnv:USERNAME}",
 			"PROJECT_NAME": "${localWorkspaceFolderBasename}",
 			"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
 			"TZ": "${localEnv:TZ:America/New_York}"
 		}
 	},
 	"workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
-	"runArgs": ["--name", "${localWorkspaceFolderBasename}_devcontainer", "--hostname", "${localWorkspaceFolderBasename}"],
+	"runArgs": ["--name", "${localWorkspaceFolderBasename}_devcontainer", "--hostname", "${localWorkspaceFolderBasename}","--env-file",".devcontainer/.env"],
 	"initializeCommand": "make initialize --ignore-errors -f .devcontainer/Makefile",
 	"updateContentCommand": "make setup --ignore-errors -f .devcontainer/Makefile", 
 	"containerEnv": {
-		"HOST_PROJECT_PATH": "${localWorkspaceFolder}",
+		"HOST_PROJECT_PATH": "${localWorkspaceFolder}"
 	},
 	"mounts": [
-		"source=${localWorkspaceFolderBasename}-home,target=/home/${localEnv:USERNAME},type=volume,consistency=delegated",
-    "source=${localEnv:USERPROFILE}/.ssh,target=/home/${localEnv:USERNAME}/.ssh,type=bind,consistency=cached",
-    "source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind,consistency=delegated"
+		"source=${localWorkspaceFolderBasename}-home,target=/home/${localEnv:USER}${localEnv:USERNAME},type=volume",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/${localEnv:USER}${localEnv:USERNAME}/.ssh,type=bind,consistency=cached",
+		"source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind,consistency=cached"
 	],
 	"customizations": {
 		"settings": {
