@@ -83,7 +83,7 @@ else ifneq (, $(shell which powershell))
 	SHELL_COMMAND=powershell
 endif
 
-initialize: echo $(INITIALIZERS) $(DEVCONTAINER_ENV)
+initialize: $(INITIALIZERS) $(DEVCONTAINER_ENV)
 
 $(DEVCONTAINER_ENV):
 	@echo "Creating empty $@ file..."
