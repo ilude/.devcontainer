@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.4
-ARG IMAGE_LANG=python 
-ARG IMAGE_VERSION=3.11-alpine3.18
+ARG IMAGE_LANG=alpine 
+ARG IMAGE_VERSION=3.18
 
 FROM ${IMAGE_LANG}:${IMAGE_VERSION}
 LABEL maintainer="Mike Glenn <mglenn@ilude.com>"
