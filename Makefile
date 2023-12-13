@@ -30,7 +30,7 @@ echo:
 	@echo DOTFILES_URL: $(DOTFILES_URL)
 	@echo DOTBOT_LINK: $(DOTBOT_LINK)
 
-setup: ssh dotfiles playbook-repos
+setup: ssh dotfiles
 	sudo chown -R $(USER):$(USER) $(PARENT_DIR)
 	@echo "Makefile Completed..."
 
@@ -40,8 +40,6 @@ ssh:
 dotfiles:
 	ansible-playbook -i .devcontainer/ansible/inventory.yml .devcontainer/ansible/clone_dotfiles.yml
 
-playbook-repos:
-	ansible-playbook -i .devcontainer/ansible/inventory.yml .devcontainer/ansible/clone_playbook_repos.yml
 
 ifeq ($(OS),Windows_NT)
   INITIALIZERS=initialize-windows
